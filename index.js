@@ -1,15 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var movies = loadMovies();
+var magic = require('./whereTheMagicHappens');
 
-router.get('/', (req, res) => {
-    res.json(movies);
-});
+router.get('/', (req, res) => magic.getMovies);
 
-router.get('/:id', (req, res) => {
-    const id = req.params.id;
-    const movie = movies.find(movie => movie.id === id);
-    return res.send(movie);
-});
+router.get('/:id', (req, res) => magic.getMovie);
 
-module.exports = movie;
+module.exports = router;
