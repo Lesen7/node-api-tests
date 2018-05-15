@@ -15,6 +15,17 @@ app.get('/movies/:id', (req, res) => {
     res.json(movie);
 });
 
+// Mostrar películas con likes
+app.get('/movies/liked', (req, res) => {
+    let likedMovies = [];
+    movies.forEach(function(element) {
+        if(element.likes && element.likes > 0) {
+            likedMovies.push(element);
+        }
+    });
+    res.json(likedMovies);
+});
+
 // Añadir una nueva película
 app.post('/movies', (req, res) => {
     const newMovie = req.body;
