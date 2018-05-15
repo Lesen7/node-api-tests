@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 app.use(express.json());
-const movies = [{id: '0', name: 'Iron Fish: The Movie', likes: 0}, {id: '1', name: 'Alien: Covenant', likes: 0}];
+const movies = [{id: '0', name: 'Iron Fish: The Movie'}, {id: '1', name: 'Alien: Covenant', likes: 0}];
 
 // Mostrar todas las películas
 app.get('/movies', (req, res) => {
@@ -37,8 +37,31 @@ app.put('/movies', (req, res) => {
 app.put('/movies/like/:id', (req, res) => {
     const movieId = req.params.id;
     let moviePosition = movies.findIndex(movie => movie.id === movieId);
+    let movie = movies[moviePosition];
     if (moviePosition >= 0) {
-        movies[moviePosition].likes++;
+        if ('likes' in movie)
+        {
+            movie.likes++;
+        } else {
+            movie.likes = 0;
+            movie.likes++;
+        }
+    }
+    res.json(movies);
+});
+
+// Quitar 'like' a una película
+app.put('/movies/dislike/:id', (req, res) => {
+    const movieId = req.params.id;
+    let moviePosition = movies.findIndex(movie => movie.id === movieId);
+    let movie = movies[moviePosition];
+    if (moviePosition >= 0) {
+        if ('likes' in movie && movie.likes > 0)
+        {
+            movie.likes--;
+        } else {
+            movie.likes = 0;
+        }
     }
     res.json(movies);
 });
